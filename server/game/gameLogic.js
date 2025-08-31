@@ -1,6 +1,6 @@
 // gameLogic.js
   function drawing_card(deck, player){
-
+    
   }
   
   // === Testovací spuštění ===

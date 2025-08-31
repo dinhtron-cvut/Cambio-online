@@ -1,33 +1,49 @@
-// === Vytvoření balíčku karet ===
-function createDeck() {
-    const suits = ["♠", "♥", "♦", "♣"];  // barvy
-    const values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+// deck.js
+
+class Deck {
+  constructor() {
+    this.suits = ["♠", "♥", "♦", "♣"];
+    this.values = ["A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"];
+    this.cards = this.createDeck();
+  }
+
+  // === Vytvoření balíčku ===
+  createDeck() {
     let deck = [];
-  
-    for (let suit of suits) {
-      for (let value of values) {
+    for (let suit of this.suits) {
+      for (let value of this.values) {
         deck.push({ suit, value });
       }
     }
-  
     return deck;
   }
-  
+
   // === Zamíchání balíčku ===
-  function shuffle(deck) {
-    for (let i = deck.length - 1; i > 0; i--) {
+  shuffle() {
+    for (let i = this.cards.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [deck[i], deck[j]] = [deck[j], deck[i]]; // swap
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
     }
-    return deck;
   }
-  
+
   // === Rozdání karet hráčům ===
-  function dealCards(deck, numPlayers, cardsPerPlayer = 4) {
+  dealCards(numPlayers, cardsPerPlayer = 4) {
     let players = [];
     for (let i = 0; i < numPlayers; i++) {
-      players.push(deck.splice(0, cardsPerPlayer)); // vezmi horní 4 karty
+      players.push(this.cards.splice(0, cardsPerPlayer));
     }
     return players;
   }
-  
+
+  // === Líznutí jedné karty ===
+  drawCard() {
+    return this.cards.length > 0 ? this.cards.shift() : null;
+  }
+
+  // === Počet zbývajících karet ===
+  remaining() {
+    return this.cards.length;
+  }
+}
+
+module.exports = Deck;
