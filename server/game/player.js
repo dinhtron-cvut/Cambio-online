@@ -26,9 +26,32 @@ class Player {
     setDrawnCard(card) {
       this.drawnCard = card;
     }
+
+    swapDrawnCardWithHand(index) {
+      if (this.drawnCard && index >= 0 && index < this.hand.length) {
+        const temp = this.hand[index];
+        this.hand[index] = this.drawnCard;
+        this.drawnCard = temp;
+      } else if (index == -1) {
+        // Pokud hráč zadá -1, nechá si líznutou kartu a nic nevyměňuje
+        console.log(`${this.name} si nechává líznutou kartu.`);
+      }
+      else {
+        console.log("Neplatný index nebo žádná líznutá karta!");
+      }
+    }
+
+    useacard(index) {
+      if (index >= 0 && index < this.hand.length) {
+        return this.hand.splice(index, 1)[0];
+      } else {
+        console.log("Neplatný index!");
+        return null;
+      }
+    }
   
     // Metoda: hráč si lízne kartu z balíčku
-    drawCard(deck) {
+    draw1Card(deck) {
       if (deck.length > 0) {
         this.drawnCard = deck.shift();  // vezme horní kartu z balíčku
         return this.drawnCard;

@@ -1,4 +1,5 @@
 // main.js
+const readline = require("readline");
 const Deck = require("./deck");
 const Player = require("./player");
 
@@ -21,9 +22,27 @@ function main() {
   console.log("Zbývající karty v balíčku:", deck.remaining());
 
   // líznutí karty
-  let card = player1.drawCard();
+  let card = deck.drawCard(deck);
   console.log(`${player1.name} líznul:`, card);
+  player1.setDrawnCard(card);
   console.log("Aktuálně líznutá karta hráče:", player1.getDrawnCard());
+
+   // === zeptáme se uživatele, jaký index vyměnit ===
+   const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+
+  rl.question("Zadej index karty, kterou chceš vyměnit (0-3): ", (answer) => {
+    let index = parseInt(answer);
+
+    player1.swapDrawnCardWithHand(index);
+
+    console.log(`${player1.name} má teď karty:`, player1.getHand());
+    console.log("Aktuálně líznutá karta hráče:", player1.getDrawnCard());
+
+    rl.close(); // ukončí čtení z terminálu
+  });
 
   console.log("Zbývající karty v balíčku:", deck.remaining());
 }
