@@ -5,8 +5,23 @@ class Player {
       this.name = name;            // jméno hráče
       this.hand = [];              // karty v ruce
       this.drawnCard = null;       // poslední líznutá karta
+      this.score = 0;             // skóre hráče
     }
-  
+    resetPlayer() {
+      this.hand = [];
+      this.drawnCard = null;
+      this.score = 0; // Pokud používáš skóre
+    }
+    
+    getScore(){
+      return this.score;
+    }
+    setScore(score){
+      this.score = score;           
+    }
+    addPoints(points){
+      this.score += points;
+    }
     // Getter na hand (vrátí kopii, aby se venku nemohlo měnit přímo)
     getHand() {
       return [...this.hand];
@@ -28,6 +43,7 @@ class Player {
     }
 
     swapDrawnCardWithHand(index) {
+      // Pokud je index platný a existuje líznutá karta, vymění je
       if (this.drawnCard && index >= 0 && index < this.hand.length) {
         const temp = this.hand[index];
         this.hand[index] = this.drawnCard;
@@ -90,4 +106,4 @@ class Player {
   
   // Export třídy pro použití jinde
   module.exports = Player;
-  
+// Compare this snippet from server/game/server.js:

@@ -27,8 +27,8 @@ function main() {
   player1.setDrawnCard(card);
   console.log("Aktuálně líznutá karta hráče:", player1.getDrawnCard());
 
-   // === zeptáme se uživatele, jaký index vyměnit ===
-   const rl = readline.createInterface({
+  // === zeptáme se uživatele, jaký index vyměnit ===
+  const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
   });
@@ -44,7 +44,7 @@ function main() {
     rl.close(); // ukončí čtení z terminálu
   });
 
-  
+
 
   console.log("Zbývající karty v balíčku:", deck.remaining());
 }
