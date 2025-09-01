@@ -30,9 +30,8 @@ class GameLogic {
   getCurrentPlayer() {
     return this.players[this.currentPlayerIndex];
   }
-
   // === Tah hráče ===
-  playerTurn(action, targetIndex = null) {
+  playerAction(action, targetIndex = null, indexUseCard) {
     const currentPlayer = this.getCurrentPlayer();
 
     switch (action) {
@@ -56,13 +55,13 @@ class GameLogic {
         break;
 
       case "discard":
-        const cardToDiscard = currentPlayer.getDrawnCard();
-        if (cardToDiscard) {
-          this.discardDeck.addCard(cardToDiscard);
-          currentPlayer.setDrawnCard(null);
-          console.log(`${currentPlayer.name} odložil kartu:`, cardToDiscard);
+        const cardsToUse = currentPlayer.useCards(indexUseCard); // Použij funkci useCards pro získání karet k odložení
+        
+        if (cardsToUse && cardsToUse.length > 0) {
+          cardsToUse.forEach(card => this.discardDeck.addCard(card)); // Přidej každou kartu do discardDeck
+          console.log(`${currentPlayer.name} odložil karty:`, cardsToUse);
         } else {
-          console.log("Hráč nemá žádnou líznutou kartu k odložení!");
+          console.log("Hráč nemá žádné karty k odložení!");
         }
         break;
 
@@ -79,15 +78,39 @@ class GameLogic {
     this.currentPlayerIndex = (this.currentPlayerIndex + 1) % this.players.length;
     console.log(`Na tahu je hráč: ${this.getCurrentPlayer().name}`);
   }
+  // === Volání CAMBIO ===
+  callingCambio(call = false, numPlayed){
+    if(call && numPlayed === this.players.length){
+      console.log(`Hráč ${this.getCurrentPlayer().name} volá CAMBIO!`);
+      this.players.forEach(player => {
+        if(player !== this.getCurrentPlayer()){
+          console.log(`Hráč ${player.name} má karty:`, player.getHand());
+        }
+      });
+      this.checkGameOver();
+      this.gameOver = true;
+    }
+  }
 
   // === Kontrola konce hry ===
   checkGameOver() {
-    this.players.forEach(player => {
-      if (player.getHand().every(card => card.value === "0")) {
-        this.gameOver = true;
-        console.log(`Hráč ${player.name} vyhrál hru!`);
-      }
-    });
+    if (this.gameOver) {
+      const scores = this.players.map(player => ({
+        name: player.name,
+        score: player.getSumOfHand()
+      }));
+
+      scores.sort((a, b) => a.score - b.score);
+
+      const winner = scores[0];
+      console.log(`Hráč ${winner.name} vyhrává hru s nejnižší hodnotou ruky: ${winner.score}!`);
+      console.log("Konečné skóre hráčů:");
+      scores.forEach(({ name, score }) => {
+        console.log(`${name}: ${score}`);
+      });
+
+      this.showGameState();
+    }
   }
 
   // === Zobrazení stavu hry ===

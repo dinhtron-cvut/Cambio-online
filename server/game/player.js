@@ -12,6 +12,35 @@ class Player {
       this.drawnCard = null;
       this.score = 0; // Pokud používáš skóre
     }
+    getSumOfHand() {
+      return this.hand.reduce((sum, card) => {
+        let value = 0;
+        switch(card.value) {
+          case 'A':
+            if(card.suit === 'black') {
+              value = 14;
+            }
+            else {
+              value = 1;
+            }
+            break;
+          case 'J':
+            value = 11;
+            break;
+          case 'Q':
+            value = 12;
+            break;
+          case 'K':
+            value = 13;
+            break;
+          default:
+            value = parseInt(card.value);
+        }
+        
+        return sum + value;
+      }, 0);
+    }
+  
     
     getScore(){
       return this.score;

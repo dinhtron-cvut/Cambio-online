@@ -1,6 +1,8 @@
 {
     "name": "cambio-server",
     "version": "1.0.0",
-    "main": "main.js"
-  }
-  
+    "main": "main.js",
+    "dependencies": {
+        "express": "^5.1.0"
+    }
+}
