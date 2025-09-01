@@ -2,6 +2,9 @@ class discarddeck{
     constructor(){
         this.cards = [];
     }
+    peekTopCard() {
+        return this.cards.length > 0 ? this.cards[this.cards.length - 1] : null;
+    }
 
     addCard(card){
         this.cards.push(card);
