@@ -44,6 +44,8 @@ function main() {
     rl.close(); // ukončí čtení z terminálu
   });
 
+  
+
   console.log("Zbývající karty v balíčku:", deck.remaining());
 }
 

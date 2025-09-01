@@ -41,12 +41,23 @@ class Player {
       }
     }
 
-    useacard(index) {
-      if (index >= 0 && index < this.hand.length) {
-        return this.hand.splice(index, 1)[0];
-      } else {
+    useCards(indexes = []) {
+      if (Array.isArray(indexes) && indexes.length > 0) {
+      let usedCards = [];
+      // Seřadit indexy sestupně, aby odebrání karet neovlivnilo ostatní indexy
+      indexes.sort((a, b) => b - a);
+      for (let i of indexes) {
+        if (i >= 0 && i < this.hand.length) {
+        usedCards.push(this.hand.splice(i, 1)[0]);
+        this.removeCardFromHand(i);
+        } else {
         console.log("Neplatný index!");
-        return null;
+        }
+      }
+      return usedCards;
+      } else {
+      console.log("Žádné indexy k použití nebo neplatný vstup!");
+      return null;
       }
     }
   
